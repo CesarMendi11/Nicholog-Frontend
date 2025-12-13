@@ -1,0 +1,78 @@
+<div class="login-page">
+  <div class="main-container" @cardEntry>
+    
+    <div class="info-side">
+      <div class="content">
+        <h1>Welcome Back!</h1>
+        <p>To keep connected with us please login with your personal info</p>
+        <button mat-stroked-button class="ghost-button">Sign Up</button>
+      </div>
+    </div>
+
+    <div class="form-side" @formStagger>
+      <h2>Log in to NichoLog</h2>
+      
+      <div class="social-container">
+        <button mat-icon-button class="social-btn"><mat-icon>facebook</mat-icon></button>
+        <button mat-icon-button class="social-btn"><mat-icon>g_translate</mat-icon></button>
+        <button mat-icon-button class="social-btn"><mat-icon>work</mat-icon></button>
+      </div>
+      
+      <span class="divider-text">or use your email account</span>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        
+        <mat-form-field appearance="outline" class="custom-field">
+          <mat-label>Email</mat-label>
+          <mat-icon matPrefix>email</mat-icon>
+          <input 
+            matInput 
+            placeholder="ejemplo@correo.com" 
+            formControlName="email"
+            required
+          >
+          <mat-error *ngIf="loginForm.get('email')?.hasError('required')">Requerido</mat-error>
+          <mat-error *ngIf="loginForm.get('email')?.hasError('email')">Email inválido</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="custom-field">
+          <mat-label>Password</mat-label>
+          <mat-icon matPrefix>lock</mat-icon>
+          <input 
+            matInput 
+            [type]="hidePassword ? 'password' : 'text'" 
+            formControlName="password"
+            required
+          >
+          <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button">
+            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+          <mat-error *ngIf="loginForm.get('password')?.hasError('required')">Requerido</mat-error>
+        </mat-form-field>
+
+        <div *ngIf="errorMessage" class="alert-error">
+          {{ errorMessage }}
+        </div>
+
+        <div class="button-container">
+          <div *ngIf="isLoading" class="spinner-container">
+            <mat-progress-spinner color="primary" mode="indeterminate" diameter="35"></mat-progress-spinner>
+          </div>
+          
+          <button 
+            *ngIf="!isLoading"
+            mat-raised-button 
+            color="primary" 
+            type="submit" 
+            class="submit-btn"
+            [disabled]="loginForm.invalid"
+          >
+            SIGN IN
+          </button>
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+</div>

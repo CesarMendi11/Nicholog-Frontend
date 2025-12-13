@@ -1,0 +1,239 @@
+/* --- LAYOUT GENERAL --- */
+.sidenav-container {
+  height: 100vh;
+  background-color: #f3f6f9; /* Fondo gris-azulado muy suave, típico SaaS */
+}
+
+/* --- SIDEBAR (Menú Lateral) --- */
+.sidenav {
+  width: 260px; /* Un poco más ancho para elegancia */
+  background-color: #ffffff;
+  border: none; /* Quitamos el borde duro */
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.02); /* Sombra muy difusa */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header del Sidebar */
+.sidenav-header {
+  height: 90px;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  margin-top: 10px;
+}
+
+.logo-container {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #0ABcf9 0%, #2C82E5 100%);
+  border-radius: 12px; /* Cuadrado redondeado moderno */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(10, 188, 249, 0.3);
+  margin-right: 15px;
+}
+
+.logo-text {
+  color: white;
+  font-weight: 800;
+  font-size: 20px;
+}
+
+.brand-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-name {
+  font-weight: 700;
+  font-size: 16px;
+  color: #1a1f36;
+  letter-spacing: -0.5px;
+}
+
+.brand-subtitle {
+  font-size: 11px;
+  color: #8792a2;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+/* Lista de Navegación */
+.nav-list {
+  padding: 0 12px; /* Margen interno para que los botones "floten" */
+}
+
+/* Subtítulos (Principal, Cuenta) */
+h3[mat-subheader] {
+  font-size: 11px;
+  font-weight: 700;
+  color: #a0aec0;
+  letter-spacing: 1px;
+  margin-top: 20px;
+  margin-bottom: 5px;
+}
+
+/* Items del Menú (Enlaces) */
+.mat-mdc-list-item {
+  border-radius: 10px !important; /* Bordes redondeados */
+  margin-bottom: 5px;
+  color: #4a5568;
+  transition: all 0.2s ease;
+}
+
+/* Iconos */
+.mat-icon {
+  color: #718096;
+  margin-right: 12px;
+}
+
+/* ESTADO ACTIVO (El toque Premium) */
+.active-link {
+  background-color: #f0f7ff !important; /* Fondo azul muy pálido */
+  color: #0ABcf9 !important; /* Texto azul vibrante */
+}
+
+.active-link .mat-icon {
+  color: #0ABcf9 !important;
+}
+
+/* Hover suave */
+.mat-mdc-list-item:hover:not(.active-link) {
+  background-color: #f7fafc;
+  color: #2d3748;
+}
+
+.logout-icon {
+  color: #e53e3e; /* Rojo suave para salir */
+}
+
+.menu-divider {
+  margin: 20px 0;
+  border-top-color: #edf2f7;
+}
+
+/* Footer del Sidebar (Usuario) */
+.sidenav-footer {
+  margin-top: auto; /* Empuja esto al fondo */
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  border-top: 1px solid #edf2f7;
+}
+
+.user-avatar mat-icon {
+  font-size: 40px;
+  width: 40px;
+  height: 40px;
+  color: #cbd5e0;
+}
+
+.user-info {
+  margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.user-name {
+  font-weight: 600;
+  font-size: 14px;
+  color: #2d3748;
+}
+
+.user-role {
+  font-size: 11px;
+  color: #718096;
+}
+
+/* --- TOOLBAR SUPERIOR --- */
+.main-toolbar {
+  background: transparent; /* Transparente para fundirse con el fondo */
+  box-shadow: none; /* Sin sombra dura */
+  padding: 0 40px; /* Alineado con el contenido */
+  height: 80px;
+}
+
+.toolbar-label span {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1a1f36;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.action-btn {
+  color: #718096;
+}
+
+/* Punto de notificación */
+.notification-btn {
+  position: relative;
+}
+
+.notification-dot {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 8px;
+  height: 8px;
+  background-color: #e53e3e;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+/* --- CONTENIDO --- */
+.content-wrapper {
+  padding: 0 40px 40px 40px;
+}
+
+/* Para darle animación al cargar las vistas */
+.content-inner {
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Ajustes Responsive para la toolbar */
+@media (max-width: 600px) {
+  .main-toolbar { padding: 0 16px; }
+  .content-wrapper { padding: 16px; }
+}
+
+/* Agrega esto a tu CSS existente */
+
+/* Transición suave para todos los items del menú */
+.mat-mdc-list-item {
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* Curva suave */
+  transform: scale(1);
+}
+
+/* Efecto al pasar el mouse: se mueve un poco a la derecha */
+.mat-mdc-list-item:hover:not(.active-link) {
+  background-color: #f7fafc;
+  transform: translateX(5px); /* Desplazamiento sutil */
+  color: #2d3748;
+}
+
+/* Efecto en el logo al hacer hover */
+.logo-container {
+  transition: transform 0.4s ease;
+}
+.sidenav-header:hover .logo-container {
+  transform: rotate(10deg) scale(1.1); /* Pequeño giro divertido */
+}
+
+/* Animación del botón de notificaciones */
+.notification-btn mat-icon {
+  transition: transform 0.2s ease;
+}
+.notification-btn:hover mat-icon {
+  transform: rotate(15deg); /* Efecto de "campana sonando" */
+}

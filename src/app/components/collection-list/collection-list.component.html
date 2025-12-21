@@ -1,0 +1,49 @@
+<div class="list-container">
+  <!-- Título y Botón para Crear -->
+  <div class="list-header">
+    <h1>Mis Colecciones</h1>
+    <span class="spacer"></span>
+    <button mat-fab extended color="primary" routerLink="../colecciones/nueva" matTooltip="Crear un nuevo 'molde' para una colección">
+      <mat-icon>add</mat-icon>
+      Crear Colección
+    </button>
+  </div>
+
+  <!-- Contenedor de la lista de colecciones -->
+  <div class="collections-grid" *ngIf="collections$ | async as collections; else loading">
+    
+    <!-- Estado cuando no hay colecciones -->
+    <div *ngIf="collections.length === 0" class="empty-state">
+      <mat-icon class="empty-icon">style</mat-icon>
+      <h2>Aún no tienes colecciones</h2>
+      <p>Crea tu primera colección para empezar a organizar tus ítems.</p>
+      <button mat-raised-button color="primary" routerLink="../colecciones/nueva">Crear mi primera colección</button>
+    </div>
+
+    <!-- Grid con las colecciones existentes -->
+    <mat-card *ngFor="let collection of collections" class="collection-card" [routerLink]="['/dashboard/inventario', collection.name]">
+      <mat-card-header>
+        <div mat-card-avatar><mat-icon>category</mat-icon></div>
+        <mat-card-title>{{ collection.name }}</mat-card-title>
+        <mat-card-subtitle>{{ collection.fields.length }} campos definidos</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-actions align="end">
+        <button mat-icon-button [routerLink]="['/dashboard/colecciones/editar', collection._id]" (click)="$event.stopPropagation()">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="deleteCollection(collection._id, $event)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+  </div>
+
+  <!-- Template para el estado de carga -->
+  <ng-template #loading>
+    <div class="loading-spinner">
+      <mat-progress-spinner mode="indeterminate" diameter="50"></mat-progress-spinner>
+      <p>Cargando colecciones...</p>
+    </div>
+  </ng-template>
+</div>

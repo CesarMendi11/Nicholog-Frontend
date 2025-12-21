@@ -1,21 +1,8 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-
-/*export const routes: Routes = [
-  // Cuando la URL esté vacía (ej. http://localhost:4200/), carga el LoginComponent.
-  {
-    path: '',
-    component: LoginComponent
-  },
-  
-  // (Opcional, pero recomendado) Redirige cualquier otra ruta no encontrada al login.
-  {
-    path: '**',
-    redirectTo: '',
-    pathMatch: 'full'
-  }
-];*/
+import { CollectionBuilderComponent } from './components/collection-builder/collection-builder.component';
+import { CollectionListComponent } from './components/collection-list/collection-list.component';
 
 export const routes: Routes = [
   // 1. Ruta raíz: Redirige automáticamente al login
@@ -37,14 +24,22 @@ export const routes: Routes = [
     component: DashboardComponent,
     children: [
       // AQUÍ IRÁN LAS VISTAS INTERNAS (Hijas)
-      // Por ahora las dejaremos comentadas hasta que creemos esos componentes
       
-      // { path: 'home', component: HomeComponent },
-      // { path: 'collections', component: CollectionsComponent },
-      // { path: 'inventory', component: InventoryComponent },
+      // 1. Redirección por defecto al resumen
+      { path: '', redirectTo: 'resumen', pathMatch: 'full' },
+
+      // 2. Vista Principal (Dashboard Stats)
+      // { path: 'resumen', component: ResumenComponent },
+
+      // 3. Gestión de Colecciones (Listado)
+      { path: 'colecciones', component: CollectionListComponent },
       
-      // Redirección por defecto dentro del dashboard (opcional)
-      // { path: '', redirectTo: 'home', pathMatch: 'full' }
+      // 4. EL MOLDE: Constructor de Plantillas (Crear/Editar)
+      { path: 'colecciones/nueva', component: CollectionBuilderComponent },
+      { path: 'colecciones/editar/:id', component: CollectionBuilderComponent },
+
+      // 5. Inventario Global
+      // { path: 'inventario', component: InventoryComponent }
     ]
   },
 

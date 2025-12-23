@@ -92,10 +92,11 @@ export class CollectionBuilderComponent implements OnInit {
 
   // Añadir un nuevo campo al formulario
   // Modificado para aceptar datos opcionales (para cuando cargamos una colección existente)
-  addField(data?: CollectionField) {
+  addField(data?: any) {
     const fieldGroup = this.fb.group({
-      type: [data?.type || 'text-short', Validators.required],
-      name: [data?.name || '', Validators.required],
+      // Compatibilidad: Revisamos si viene como 'type'/'name' (nuevo) o 'fieldType'/'fieldName' (viejo)
+      type: [data?.type || data?.fieldType || 'text-short', Validators.required],
+      name: [data?.name || data?.fieldName || '', Validators.required],
       required: [data?.required || false],
       options: this.fb.array([]) // Solo se usa si type === 'selector'
     });
@@ -112,8 +113,8 @@ export class CollectionBuilderComponent implements OnInit {
     });
 
     // Si estamos cargando datos y es un selector, rellenar las opciones
-    if (data?.type === 'selector' && data.options) {
-      data.options.forEach(opt => {
+    if (data?.type === 'selector' && Array.isArray(data.options)) {
+      data.options.forEach((opt: any) => {
         (fieldGroup.get('options') as FormArray).push(this.fb.control(opt, Validators.required));
       });
     }

@@ -17,7 +17,7 @@ export interface CollectionField {
 export interface CollectionTemplate {
   _id?: string;      // El ID lo genera Mongo
   name: string;      // Ej: "Zapatillas"
-  fields: CollectionField[];
+  fields?: CollectionField[];
   userId?: string;
   createdAt?: string;
 }

@@ -29,6 +29,7 @@ import { CatalogService, CollectionTemplate } from '../../services/catalog.servi
 })
 export class CollectionListComponent implements OnInit {
   private catalogService = inject(CatalogService);
+  private router = inject(Router);
   
   // Usamos el pipe 'async' en el HTML para manejar la suscripción
   collections$!: Observable<CollectionTemplate[]>;
@@ -39,6 +40,14 @@ export class CollectionListComponent implements OnInit {
 
   loadCollections(): void {
     this.collections$ = this.catalogService.getUserCollections();
+  }
+
+  // Método para editar (navegación manual para mayor seguridad)
+  editCollection(id: string | undefined, event: MouseEvent): void {
+    event.stopPropagation();
+    if (id) {
+      this.router.navigate(['/dashboard/colecciones/editar', id]);
+    }
   }
 
   // Método para eliminar (lo conectaremos más adelante)

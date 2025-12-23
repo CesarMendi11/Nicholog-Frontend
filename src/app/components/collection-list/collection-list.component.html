@@ -25,10 +25,10 @@
       <mat-card-header>
         <div mat-card-avatar><mat-icon>category</mat-icon></div>
         <mat-card-title>{{ collection.name }}</mat-card-title>
-        <mat-card-subtitle>{{ collection.fields.length }} campos definidos</mat-card-subtitle>
+        <mat-card-subtitle>{{ collection.fields?.length || 0 }} campos definidos</mat-card-subtitle>
       </mat-card-header>
       <mat-card-actions align="end">
-        <button mat-icon-button [routerLink]="['/dashboard/colecciones/editar', collection._id]" (click)="$event.stopPropagation()">
+        <button mat-icon-button (click)="editCollection(collection._id, $event)">
           <mat-icon>edit</mat-icon>
         </button>
         <button mat-icon-button color="warn" (click)="deleteCollection(collection._id, $event)">

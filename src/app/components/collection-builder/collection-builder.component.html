@@ -107,6 +107,7 @@
 
         <!-- Botón Submit -->
         <div class="form-actions">
+          <button mat-button type="button" (click)="cancel()" style="margin-right: 10px;">Cancelar</button>
           <button mat-raised-button color="primary" type="submit" [disabled]="collectionForm.invalid" class="save-btn">
             <mat-icon>save</mat-icon> Guardar Plantilla
           </button>

@@ -77,10 +77,15 @@ export class CollectionBuilderComponent implements OnInit {
         // 1. Cargar nombre
         this.collectionForm.patchValue({ name: collection.name });
 
-        // 2. Reconstruir los campos dinámicos
-        collection.fields.forEach(field => {
-          this.addField(field);
-        });
+        // 2. Limpiar campos previos (por si acaso)
+        this.fields.clear();
+
+        // 3. Reconstruir los campos dinámicos (con validación)
+        if (collection.fields && Array.isArray(collection.fields)) {
+          collection.fields.forEach(field => {
+            this.addField(field);
+          });
+        }
       }
     });
   }
@@ -93,11 +98,16 @@ export class CollectionBuilderComponent implements OnInit {
   // Añadir un nuevo campo al formulario
   // Modificado para aceptar datos opcionales (para cuando cargamos una colección existente)
   addField(data?: any) {
+    // Normalizamos los datos para manejar compatibilidad (backend viejo vs nuevo)
+    const fieldType = data?.type || data?.fieldType || 'text-short';
+    const fieldName = data?.name || data?.fieldName || '';
+    const fieldRequired = data?.required || false;
+    const fieldOptions = data?.options || [];
+
     const fieldGroup = this.fb.group({
-      // Compatibilidad: Revisamos si viene como 'type'/'name' (nuevo) o 'fieldType'/'fieldName' (viejo)
-      type: [data?.type || data?.fieldType || 'text-short', Validators.required],
-      name: [data?.name || data?.fieldName || '', Validators.required],
-      required: [data?.required || false],
+      type: [fieldType, Validators.required],
+      name: [fieldName, Validators.required],
+      required: [fieldRequired],
       options: this.fb.array([]) // Solo se usa si type === 'selector'
     });
 
@@ -113,8 +123,8 @@ export class CollectionBuilderComponent implements OnInit {
     });
 
     // Si estamos cargando datos y es un selector, rellenar las opciones
-    if (data?.type === 'selector' && Array.isArray(data.options)) {
-      data.options.forEach((opt: any) => {
+    if (fieldType === 'selector' && Array.isArray(fieldOptions)) {
+      fieldOptions.forEach((opt: any) => {
         (fieldGroup.get('options') as FormArray).push(this.fb.control(opt, Validators.required));
       });
     }
@@ -141,6 +151,10 @@ export class CollectionBuilderComponent implements OnInit {
     optionsArray.removeAt(index);
   }
 
+  cancel() {
+    this.router.navigate(['/dashboard/colecciones']);
+  }
+
   // --- Guardar ---
 
   onSubmit() {
@@ -152,30 +166,31 @@ export class CollectionBuilderComponent implements OnInit {
         fields: formValue.fields
       };
 
-      console.log('Enviando plantilla al backend:', newTemplate);
       
       if (this.isEditMode && this.collectionId) {
         // MODO EDICIÓN
         this.catalogService.updateCollection(this.collectionId, newTemplate).subscribe({
           next: (res) => {
-            console.log('Colección actualizada:', res);
             this.router.navigate(['/dashboard/colecciones']);
           },
           error: (err) => {
             console.error('Error al actualizar:', err);
-            alert('Error al actualizar. Revisa la consola.');
+            if (err.error) console.error('Detalles del error (Backend):', err.error);
+            const msg = err.error?.message || 'Error al actualizar. Revisa la consola.';
+            alert(msg);
           }
         });
       } else {
         // MODO CREACIÓN
         this.catalogService.createCollection(newTemplate).subscribe({
           next: (res) => {
-            console.log('Colección creada:', res);
             this.router.navigate(['/dashboard/colecciones']);
           },
           error: (err) => {
             console.error('Error al crear:', err);
-            alert('Error al guardar. Revisa la consola.');
+            if (err.error) console.error('Detalles del error (Backend):', err.error);
+            const msg = err.error?.message || 'Error al guardar. Revisa la consola.';
+            alert(msg);
           }
         });
       }

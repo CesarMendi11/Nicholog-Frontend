@@ -1,0 +1,53 @@
+<div class="inventory-container">
+  <div class="header">
+    <h1>Inventario: {{ collectionName }}</h1>
+    <span class="spacer"></span>
+    <button mat-fab extended color="primary" [routerLink]="['./nuevo']" matTooltip="Añadir un nuevo artículo a esta colección">
+      <mat-icon>add</mat-icon>
+      Añadir Artículo
+    </button>
+  </div>
+
+  <div *ngIf="items$ | async as items; else loading">
+    <div *ngIf="items.length === 0; else grid" class="empty-state">
+      <mat-icon class="empty-icon">inventory_2</mat-icon>
+      <h2>Esta colección está vacía</h2>
+      <p>Añade tu primer artículo para empezar.</p>
+    </div>
+
+    <ng-template #grid>
+      <div class="items-grid">
+        <mat-card *ngFor="let item of items" class="item-card" [routerLink]="['./editar', item._id]">
+          <img mat-card-image 
+               [src]="item.images && item.images.length > 0 ? item.images[0] : 'https://placehold.co/600x400?text=Sin+Imagen'" 
+               alt="{{ item.name }}"
+               onerror="this.src='https://placehold.co/600x400?text=Sin+Imagen'">
+          <mat-card-header>
+            <mat-card-title>{{ item.name }}</mat-card-title>
+            <mat-card-subtitle *ngIf="item.acquisition?.price">
+              Valor: {{ item.acquisition?.price | currency }}
+            </mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <mat-chip-listbox aria-label="Datos dinámicos">
+              <mat-chip *ngFor="let key of objectKeys(item.dynamicData) | slice:0:2">
+                <strong>{{ key }}:</strong>&nbsp;{{ item.dynamicData[key] }}
+              </mat-chip>
+            </mat-chip-listbox>
+          </mat-card-content>
+          <mat-card-actions align="end">
+            <button mat-icon-button (click)="deleteItem(item._id, $event)" color="warn">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </ng-template>
+  </div>
+
+  <ng-template #loading>
+    <div class="loading-spinner">
+      <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+    </div>
+  </ng-template>
+</div>

@@ -24,13 +24,15 @@ export interface CollectionTemplate {
 
 export interface Item {
   _id?: string;
+  name: string;
   templateId: string; // ID de la colección a la que pertenece
   dynamicData: { [key: string]: any }; // Los datos variables según la plantilla
   acquisition?: {
     price?: number;
     date?: string;
-    origin?: string;
+    estimatedValue?: number;
   };
+  images?: string[]; // Galería de imágenes
 }
 
 @Injectable({
@@ -58,6 +60,13 @@ export class CatalogService {
   getCollectionById(id: string): Observable<CollectionTemplate | undefined> {
     return this.getUserCollections().pipe(
       map(collections => collections.find(c => c._id === id))
+    );
+  }
+
+  // Método auxiliar para buscar por nombre (para la ruta /inventario/:nombre)
+  getCollectionByName(name: string): Observable<CollectionTemplate | undefined> {
+    return this.getUserCollections().pipe(
+      map(collections => collections.find(c => c.name.toLowerCase() === name.toLowerCase()))
     );
   }
 

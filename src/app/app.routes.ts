@@ -3,6 +3,8 @@ import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { CollectionBuilderComponent } from './components/collection-builder/collection-builder.component';
 import { CollectionListComponent } from './components/collection-list/collection-list.component';
+import { InventoryComponent } from './components/inventory/inventory.component';
+import { ItemFormComponent } from './components/item-form/item-form.component';
 
 export const routes: Routes = [
   // 1. Ruta raíz: Redirige automáticamente al login
@@ -38,8 +40,10 @@ export const routes: Routes = [
       { path: 'colecciones/nueva', component: CollectionBuilderComponent },
       { path: 'colecciones/editar/:id', component: CollectionBuilderComponent },
 
-      // 5. Inventario Global
-      // { path: 'inventario', component: InventoryComponent }
+      // 5. Inventario (Gestión de Artículos)
+      { path: 'inventario/:name', component: InventoryComponent },
+      { path: 'inventario/:name/nuevo', component: ItemFormComponent },
+      { path: 'inventario/:name/editar/:itemId', component: ItemFormComponent }
     ]
   },
 

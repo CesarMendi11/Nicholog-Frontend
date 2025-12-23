@@ -1,0 +1,50 @@
+Paso 1: Inicia Sesión
+Abre tu navegador y ve a http://localhost:4200.
+Ingresa tus credenciales de usuario y haz clic en SIGN IN.
+Deberías ser redirigido a la vista principal del Dashboard.
+Paso 2: Crea tu Primera Colección (El "Molde")
+Vamos a crear una plantilla para "Zapatillas".
+
+En el menú lateral izquierdo, haz clic en "Colecciones".
+Verás una pantalla indicando que no tienes colecciones. Haz clic en el botón azul "Crear Colección".
+Ahora estás en el Constructor de Plantillas. Rellena el formulario de la siguiente manera:
+Nombre de la Colección: Zapatillas
+Ahora, define los campos para esta colección:
+Haz clic en "Añadir Nuevo Campo".
+Campo #1:
+Tipo de Dato: Texto Corto (Ej. Modelo)
+Nombre del Campo: Modelo
+Marca la casilla "Obligatorio".
+Haz clic de nuevo en "Añadir Nuevo Campo".
+Campo #2:
+Tipo de Dato: Número (Ej. Talla, Año)
+Nombre del Campo: Talla US
+Haz clic una última vez en "Añadir Nuevo Campo".
+Campo #3:
+Tipo de Dato: Selector (Opciones predefinidas)
+Nombre del Campo: Condición
+Aparecerá una sección para las opciones. Rellénalas:
+Opción 1: Nuevo con caja
+Haz clic en "Añadir Opción".
+Opción 2: Usado
+Cuando termines, haz clic en el botón "Guardar Plantilla".
+Verificación: Serás redirigido a la pantalla "Mis Colecciones". Ahora deberías ver una tarjeta para "Zapatillas" que indica "3 campos definidos".
+Paso 3: Añade tu Primer Artículo al Inventario
+Ahora que el "molde" está listo, vamos a llenarlo.
+
+En la pantalla "Mis Colecciones", haz clic sobre la tarjeta de "Zapatillas".
+Serás llevado a la vista de "Inventario: Zapatillas", que estará vacía.
+Haz clic en el botón azul "Añadir Artículo".
+Se abrirá el formulario para crear un nuevo ítem. Notarás que, además de los campos fijos, han aparecido dinámicamente los campos que definiste para "Zapatillas" (Modelo, Talla US, Condición). Rellena el formulario:
+Nombre del Artículo: Air Jordan 1 High 'Chicago'
+URL de Imagen Principal: https://images.stockx.com/images/Air-Jordan-1-Retro-High-Chicago-Reimagined-Product.jpg
+Detalles de la Colección (Dinámicos):
+Modelo: DZ5485-612
+Talla US: 10.5
+Condición: Selecciona Nuevo con caja del desplegable.
+Datos de Adquisición:
+Precio de Compra: 180
+Valor Estimado: 350
+Fecha de Compra: Selecciona cualquier fecha del calendario.
+Haz clic en el botón "Guardar Artículo".
+Verificación Final: Serás redirigido de vuelta al inventario de "Zapatillas". Ahora deberías ver la tarjeta de tu nuevo Air Jordan 1 High 'Chicago' con su imagen, nombre y valor.

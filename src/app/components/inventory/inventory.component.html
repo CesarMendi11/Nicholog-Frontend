@@ -1,6 +1,11 @@
 <div class="inventory-container">
   <div class="header">
-    <h1>Inventario: {{ collectionName }}</h1>
+    <div class="title-group">
+      <button mat-icon-button routerLink="/dashboard/colecciones" matTooltip="Volver a mis colecciones">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <h1>Inventario: {{ collectionName }}</h1>
+    </div>
     <span class="spacer"></span>
     <button mat-fab extended color="primary" [routerLink]="['./nuevo']" matTooltip="Añadir un nuevo artículo a esta colección">
       <mat-icon>add</mat-icon>

@@ -1,11 +1,15 @@
 <div class="builder-container">
   <mat-card class="builder-card">
     <mat-card-header>
-      <div mat-card-avatar>
-        <mat-icon class="header-icon">build</mat-icon>
+      <div class="card-header-content">
+        <button mat-icon-button (click)="cancel()" matTooltip="Volver a mis colecciones">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <div>
+          <mat-card-title>Constructor de Plantillas</mat-card-title>
+          <mat-card-subtitle>Diseña el "molde" perfecto para tu colección</mat-card-subtitle>
+        </div>
       </div>
-      <mat-card-title>Constructor de Plantillas</mat-card-title>
-      <mat-card-subtitle>Diseña el "molde" perfecto para tu colección</mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content>

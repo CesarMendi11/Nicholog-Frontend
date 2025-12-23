@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
+.card-header-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
 .form-container {
   padding: 24px;
   max-width: 900px;

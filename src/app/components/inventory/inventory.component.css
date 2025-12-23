@@ -10,6 +10,12 @@
   margin-bottom: 24px;
 }
 
+.title-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
 .header h1 {
   margin: 0;
   font-size: 2em;

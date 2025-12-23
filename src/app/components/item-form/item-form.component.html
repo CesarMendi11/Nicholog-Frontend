@@ -1,8 +1,15 @@
 <div class="form-container">
   <mat-card>
     <mat-card-header>
-      <mat-card-title>{{ isEditMode ? 'Editar' : 'Nuevo' }} Artículo</mat-card-title>
-      <mat-card-subtitle>Colección: <strong>{{ collectionName }}</strong></mat-card-subtitle>
+      <div class="card-header-content">
+        <button mat-icon-button (click)="goBack()" matTooltip="Volver al inventario">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <div>
+          <mat-card-title>{{ isEditMode ? 'Editar' : 'Nuevo' }} Artículo</mat-card-title>
+          <mat-card-subtitle>Colección: <strong>{{ collectionName }}</strong></mat-card-subtitle>
+        </div>
+      </div>
     </mat-card-header>
 
     <mat-card-content>

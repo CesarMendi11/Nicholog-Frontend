@@ -11,6 +11,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatChipsModule } from '@angular/material/chips';
 
+import { listStaggerAnimation } from '../../animations';
 import { CatalogService, Item } from '../../services/catalog.service';
 
 @Component({
@@ -27,7 +28,8 @@ import { CatalogService, Item } from '../../services/catalog.service';
     MatChipsModule
   ],
   templateUrl: './inventory.component.html',
-  styleUrls: ['./inventory.component.css']
+  styleUrls: ['./inventory.component.css'],
+  animations: [listStaggerAnimation]
 })
 export class InventoryComponent implements OnInit {
   private route = inject(ActivatedRoute);

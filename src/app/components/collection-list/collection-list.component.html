@@ -10,7 +10,7 @@
   </div>
 
   <!-- Contenedor de la lista de colecciones -->
-  <div class="collections-grid" *ngIf="collections$ | async as collections; else loading">
+  <div class="collections-grid" @listStagger *ngIf="collections$ | async as collections; else loading">
     
     <!-- Estado cuando no hay colecciones -->
     <div *ngIf="collections.length === 0" class="empty-state">

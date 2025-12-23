@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
+import { listStaggerAnimation } from '../../animations';
 import { CatalogService, CollectionTemplate } from '../../services/catalog.service';
 
 @Component({
@@ -25,7 +26,8 @@ import { CatalogService, CollectionTemplate } from '../../services/catalog.servi
     MatTooltipModule
   ],
   templateUrl: './collection-list.component.html',
-  styleUrls: ['./collection-list.component.css']
+  styleUrls: ['./collection-list.component.css'],
+  animations: [listStaggerAnimation]
 })
 export class CollectionListComponent implements OnInit {
   private catalogService = inject(CatalogService);

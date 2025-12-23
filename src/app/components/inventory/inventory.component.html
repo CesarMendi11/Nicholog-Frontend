@@ -8,7 +8,7 @@
     </button>
   </div>
 
-  <div *ngIf="items$ | async as items; else loading">
+  <div @listStagger *ngIf="items$ | async as items; else loading">
     <div *ngIf="items.length === 0; else grid" class="empty-state">
       <mat-icon class="empty-icon">inventory_2</mat-icon>
       <h2>Esta colección está vacía</h2>

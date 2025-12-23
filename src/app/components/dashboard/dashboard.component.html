@@ -77,7 +77,9 @@
 
     <div class="content-wrapper">
       <div class="content-inner">
-        <router-outlet></router-outlet>
+        <div [@routeFade]="getRouteAnimationData()">
+          <router-outlet></router-outlet>
+        </div>
       </div>
     </div>
 

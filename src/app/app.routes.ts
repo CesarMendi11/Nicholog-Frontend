@@ -31,19 +31,19 @@ export const routes: Routes = [
       { path: '', redirectTo: 'resumen', pathMatch: 'full' },
 
       // 2. Vista Principal (Dashboard Stats)
-      // { path: 'resumen', component: ResumenComponent },
+      // { path: 'resumen', component: ResumenComponent, data: { animationState: 'Resumen' } },
 
       // 3. Gestión de Colecciones (Listado)
-      { path: 'colecciones', component: CollectionListComponent },
+      { path: 'colecciones', component: CollectionListComponent, data: { animationState: 'Colecciones' } },
       
       // 4. EL MOLDE: Constructor de Plantillas (Crear/Editar)
-      { path: 'colecciones/nueva', component: CollectionBuilderComponent },
-      { path: 'colecciones/editar/:id', component: CollectionBuilderComponent },
+      { path: 'colecciones/nueva', component: CollectionBuilderComponent, data: { animationState: 'ColeccionBuilder' } },
+      { path: 'colecciones/editar/:id', component: CollectionBuilderComponent, data: { animationState: 'ColeccionBuilder' } },
 
       // 5. Inventario (Gestión de Artículos)
-      { path: 'inventario/:name', component: InventoryComponent },
-      { path: 'inventario/:name/nuevo', component: ItemFormComponent },
-      { path: 'inventario/:name/editar/:itemId', component: ItemFormComponent }
+      { path: 'inventario/:name', component: InventoryComponent, data: { animationState: 'Inventario' } },
+      { path: 'inventario/:name/nuevo', component: ItemFormComponent, data: { animationState: 'ItemForm' } },
+      { path: 'inventario/:name/editar/:itemId', component: ItemFormComponent, data: { animationState: 'ItemForm' } }
     ]
   },
 

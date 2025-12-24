@@ -9,8 +9,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { listStaggerAnimation } from '../../animations';
+import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component';
 import { CatalogService, CollectionTemplate } from '../../services/catalog.service';
 
 @Component({
@@ -23,7 +26,9 @@ import { CatalogService, CollectionTemplate } from '../../services/catalog.servi
     MatButtonModule,
     MatIconModule,
     MatProgressSpinnerModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatDialogModule,
+    MatSnackBarModule
   ],
   templateUrl: './collection-list.component.html',
   styleUrls: ['./collection-list.component.css'],
@@ -32,6 +37,8 @@ import { CatalogService, CollectionTemplate } from '../../services/catalog.servi
 export class CollectionListComponent implements OnInit {
   private catalogService = inject(CatalogService);
   private router = inject(Router);
+  private dialog = inject(MatDialog);
+  private snackBar = inject(MatSnackBar);
   
   // Usamos el pipe 'async' en el HTML para manejar la suscripción
   collections$!: Observable<CollectionTemplate[]>;
@@ -57,17 +64,26 @@ export class CollectionListComponent implements OnInit {
     event.stopPropagation(); // Evita que se active el click de la card
     if (!id) return;
 
-    if (confirm('¿Estás seguro de que quieres eliminar esta colección y todos sus ítems?')) {
-      this.catalogService.deleteCollection(id).subscribe({
-        next: () => {
-          alert('Colección eliminada');
-          this.loadCollections(); // Recargamos la lista
-        },
-        error: (err) => {
-          console.error('Error al eliminar:', err);
-          alert('No se pudo eliminar la colección.');
-        }
-      });
-    }
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Confirmar Eliminación',
+        message: '¿Estás seguro de que quieres eliminar esta colección? Todos sus artículos también serán borrados permanentemente.'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.catalogService.deleteCollection(id).subscribe({
+          next: () => {
+            this.snackBar.open('Colección eliminada con éxito', 'Cerrar', { duration: 3000 });
+            this.loadCollections(); // Recargamos la lista
+          },
+          error: (err) => {
+            console.error('Error al eliminar:', err);
+            this.snackBar.open('Error: No se pudo eliminar la colección', 'Cerrar', { duration: 3000 });
+          }
+        });
+      }
+    });
   }
 }

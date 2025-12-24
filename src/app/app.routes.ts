@@ -28,7 +28,7 @@ export const routes: Routes = [
       // AQUÍ IRÁN LAS VISTAS INTERNAS (Hijas)
       
       // 1. Redirección por defecto al resumen
-      { path: '', redirectTo: 'resumen', pathMatch: 'full' },
+      { path: '', redirectTo: 'colecciones', pathMatch: 'full' },
 
       // 2. Vista Principal (Dashboard Stats)
       // { path: 'resumen', component: ResumenComponent, data: { animationState: 'Resumen' } },

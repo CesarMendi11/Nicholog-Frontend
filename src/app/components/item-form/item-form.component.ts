@@ -15,6 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { CatalogService, CollectionTemplate, Item } from '../../services/catalog.service';
 
@@ -33,7 +34,8 @@ import { CatalogService, CollectionTemplate, Item } from '../../services/catalog
     MatIconModule,
     MatCardModule,
     MatDividerModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatSnackBarModule
   ],
   templateUrl: './item-form.component.html',
   styleUrls: ['./item-form.component.css']
@@ -43,6 +45,7 @@ export class ItemFormComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private catalogService = inject(CatalogService);
+  private snackBar = inject(MatSnackBar);
 
   collectionName: string = '';
   template: CollectionTemplate | null = null;
@@ -128,7 +131,7 @@ export class ItemFormComponent implements OnInit {
       next: () => this.goBack(),
       error: (err) => {
         console.error('Error al guardar el artículo:', err);
-        alert(`Error: ${err.error?.message || 'No se pudo guardar el artículo.'}`);
+        this.snackBar.open(`Error: ${err.error?.message || 'No se pudo guardar el artículo.'}`, 'Cerrar', { duration: 5000 });
       }
     });
   }

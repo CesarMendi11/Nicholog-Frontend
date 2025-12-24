@@ -13,6 +13,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { CatalogService, FieldType, CollectionTemplate, CollectionField } from '../../services/catalog.service';
 
@@ -30,7 +31,8 @@ import { CatalogService, FieldType, CollectionTemplate, CollectionField } from '
     MatCardModule,
     MatCheckboxModule,
     MatDividerModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatSnackBarModule
   ],
   templateUrl: './collection-builder.component.html',
   styleUrls: ['./collection-builder.component.css']
@@ -40,6 +42,7 @@ export class CollectionBuilderComponent implements OnInit {
   private catalogService = inject(CatalogService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private snackBar = inject(MatSnackBar);
 
   collectionId: string | null = null;
   isEditMode = false;
@@ -171,26 +174,28 @@ export class CollectionBuilderComponent implements OnInit {
         // MODO EDICIÓN
         this.catalogService.updateCollection(this.collectionId, newTemplate).subscribe({
           next: (res) => {
+            this.snackBar.open('Colección actualizada con éxito', 'Cerrar', { duration: 3000 });
             this.router.navigate(['/dashboard/colecciones']);
           },
           error: (err) => {
             console.error('Error al actualizar:', err);
             if (err.error) console.error('Detalles del error (Backend):', err.error);
             const msg = err.error?.message || 'Error al actualizar. Revisa la consola.';
-            alert(msg);
+            this.snackBar.open(msg, 'Cerrar', { duration: 5000 });
           }
         });
       } else {
         // MODO CREACIÓN
         this.catalogService.createCollection(newTemplate).subscribe({
           next: (res) => {
+            this.snackBar.open('Colección creada con éxito', 'Cerrar', { duration: 3000 });
             this.router.navigate(['/dashboard/colecciones']);
           },
           error: (err) => {
             console.error('Error al crear:', err);
             if (err.error) console.error('Detalles del error (Backend):', err.error);
             const msg = err.error?.message || 'Error al guardar. Revisa la consola.';
-            alert(msg);
+            this.snackBar.open(msg, 'Cerrar', { duration: 5000 });
           }
         });
       }

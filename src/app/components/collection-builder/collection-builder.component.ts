@@ -106,12 +106,15 @@ export class CollectionBuilderComponent implements OnInit {
     const fieldName = data?.name || data?.fieldName || '';
     const fieldRequired = data?.required || false;
     const fieldOptions = data?.options || [];
+    const fieldWidth = data?.width || 'full'; // Smart Layout
 
     const fieldGroup = this.fb.group({
       type: [fieldType, Validators.required],
       name: [fieldName, Validators.required],
       required: [fieldRequired],
-      options: this.fb.array([]) // Solo se usa si type === 'selector'
+      width: [fieldWidth], // Nuevo control para el ancho
+      // Para selectores, este array contendrá FormGroups de {value: string, color: string}
+      options: this.fb.array([]) 
     });
 
     // Lógica: Si el usuario cambia el tipo a algo que no sea 'selector', limpiamos las opciones
@@ -127,8 +130,11 @@ export class CollectionBuilderComponent implements OnInit {
 
     // Si estamos cargando datos y es un selector, rellenar las opciones
     if (fieldType === 'selector' && Array.isArray(fieldOptions)) {
+      const optionColors = data?.optionColors || {};
       fieldOptions.forEach((opt: any) => {
-        (fieldGroup.get('options') as FormArray).push(this.fb.control(opt, Validators.required));
+        const color = optionColors[opt] || 'default';
+        const optionGroup = this.fb.group({ value: [opt, Validators.required], color: [color] });
+        (fieldGroup.get('options') as FormArray).push(optionGroup);
       });
     }
 
@@ -142,12 +148,14 @@ export class CollectionBuilderComponent implements OnInit {
 
   // --- Gestión de Opciones (Solo para Selectores) ---
   
-  getOptions(fieldIndex: number): FormArray {
+  getOptionsArray(fieldIndex: number): FormArray {
     return this.fields.at(fieldIndex).get('options') as FormArray;
   }
 
   addOption(optionsArray: FormArray) {
-    optionsArray.push(this.fb.control('', Validators.required));
+    // Ahora añadimos un FormGroup con 'value' y 'color'
+    const optionGroup = this.fb.group({ value: ['', Validators.required], color: ['default'] });
+    optionsArray.push(optionGroup);
   }
 
   removeOption(optionsArray: FormArray, index: number) {
@@ -164,9 +172,26 @@ export class CollectionBuilderComponent implements OnInit {
     if (this.collectionForm.valid) {
       const formValue = this.collectionForm.value;
       
+      // Transformamos los datos para que coincidan con el backend
+      const processedFields = formValue.fields.map((field: any) => {
+        if (field.type === 'selector') {
+          const options: string[] = [];
+          const optionColors: { [key: string]: string } = {};
+          
+          field.options.forEach((optGroup: { value: string, color: string }) => {
+            if (optGroup.value) { // Solo añadir si la opción tiene un valor
+              options.push(optGroup.value);
+              optionColors[optGroup.value] = optGroup.color;
+            }
+          });
+          return { ...field, options, optionColors };
+        }
+        return field;
+      });
+
       const newTemplate: CollectionTemplate = {
         name: formValue.name,
-        fields: formValue.fields
+        fields: processedFields
       };
 
       

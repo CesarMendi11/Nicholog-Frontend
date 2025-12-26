@@ -14,8 +14,8 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { listStaggerAnimation } from '../../animations';
+import { CatalogService, Item, CollectionTemplate } from '../../services/catalog.service';
 import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component';
-import { CatalogService, Item } from '../../services/catalog.service';
 
 @Component({
   selector: 'app-inventory',
@@ -44,6 +44,7 @@ export class InventoryComponent implements OnInit {
 
   collectionName: string = '';
   items$: Observable<Item[]> = of([]);
+  template: CollectionTemplate | undefined;
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -57,6 +58,10 @@ export class InventoryComponent implements OnInit {
 
   loadItems(): void {
     this.items$ = this.catalogService.getItemsByCollectionName(this.collectionName);
+    // Cargamos también la plantilla para tener acceso a los colores
+    this.catalogService.getCollectionByName(this.collectionName).subscribe(t => {
+      this.template = t;
+    });
   }
 
   deleteItem(id: string | undefined, event: MouseEvent): void {
@@ -90,5 +95,16 @@ export class InventoryComponent implements OnInit {
   objectKeys(obj: any): string[] {
     if (!obj) return [];
     return Object.keys(obj);
+  }
+
+  // Obtener color para un valor específico
+  getBadgeColor(key: string, value: any): string {
+    if (!this.template || !this.template.fields) return 'default';
+    
+    const field = this.template.fields.find(f => f.name === key);
+    if (field && field.optionColors && field.optionColors[value]) {
+      return field.optionColors[value];
+    }
+    return 'default';
   }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, catchError, of } from 'rxjs';
 
 // Imports de Material y Servicios
 import { MatCardModule } from '@angular/material/card';
@@ -13,8 +13,8 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { listStaggerAnimation } from '../../animations';
-import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component';
 import { CatalogService, CollectionTemplate } from '../../services/catalog.service';
+import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-collection-list',
@@ -48,7 +48,13 @@ export class CollectionListComponent implements OnInit {
   }
 
   loadCollections(): void {
-    this.collections$ = this.catalogService.getUserCollections();
+    this.collections$ = this.catalogService.getUserCollections().pipe(
+      catchError(err => {
+        console.error('Error cargando colecciones:', err);
+        this.snackBar.open('Error al cargar colecciones. Verifica tu conexión.', 'Cerrar', { duration: 5000 });
+        return of([]); // Retorna lista vacía para evitar romper la UI
+      })
+    );
   }
 
   // Método para editar (navegación manual para mayor seguridad)

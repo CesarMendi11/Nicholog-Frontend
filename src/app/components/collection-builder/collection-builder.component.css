@@ -73,6 +73,11 @@
   min-width: 200px;
 }
 
+.field-width {
+  flex: 0.5;
+  min-width: 120px;
+}
+
 .field-options {
   padding-top: 5px;
 }
@@ -101,6 +106,10 @@
 
 .option-input {
   flex: 1;
+}
+
+.color-select {
+  width: 120px;
 }
 
 /* Estado vacío */

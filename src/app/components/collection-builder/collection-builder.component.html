@@ -65,6 +65,15 @@
                 <input matInput formControlName="name" placeholder="Ej. Talla, Marca, Año">
               </mat-form-field>
 
+              <!-- Ancho del Campo (Smart Layout) -->
+              <mat-form-field appearance="outline" class="field-width">
+                <mat-label>Ancho</mat-label>
+                <mat-select formControlName="width">
+                  <mat-option value="full">Completo (100%)</mat-option>
+                  <mat-option value="half">Medio (50%)</mat-option>
+                </mat-select>
+              </mat-form-field>
+
               <!-- Checkbox Requerido -->
               <div class="field-options">
                 <mat-checkbox formControlName="required">Obligatorio</mat-checkbox>
@@ -74,18 +83,34 @@
             <!-- 3. Sub-sección para Opciones (Solo si es Selector) -->
             <div *ngIf="field.get('type')?.value === 'selector'" class="selector-panel">
               <h4>Opciones del Selector</h4>
+              <p class="hint-text">Define las opciones y asigna un color para los "Badges" visuales.</p>
+              
               <div formArrayName="options">
-                <div *ngFor="let opt of getOptions(i).controls; let j = index" class="option-row">
+                <!-- Iteramos sobre los FormGroups de opciones -->
+                <div *ngFor="let optionGroup of getOptionsArray(i).controls; let j = index" [formGroupName]="j" class="option-row">
                   <mat-form-field appearance="fill" density="dense" class="option-input">
                     <mat-label>Opción {{ j + 1 }}</mat-label>
-                    <input matInput [formControlName]="j" placeholder="Ej. Nuevo, Usado">
+                    <input matInput formControlName="value" placeholder="Ej. Nuevo, Usado">
                   </mat-form-field>
-                  <button mat-icon-button color="warn" type="button" (click)="removeOption(getOptions(i), j)">
+
+                  <!-- Selector de Color Simple -->
+                  <mat-form-field appearance="fill" density="dense" class="color-select">
+                    <mat-label>Color</mat-label>
+                    <mat-select formControlName="color">
+                      <mat-option value="default">Gris</mat-option>
+                      <mat-option value="success">Verde (Bueno)</mat-option>
+                      <mat-option value="warning">Amarillo (Alerta)</mat-option>
+                      <mat-option value="warn">Rojo (Peligro)</mat-option>
+                      <mat-option value="primary">Azul (Info)</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <button mat-icon-button color="warn" type="button" (click)="removeOption(getOptionsArray(i), j)">
                     <mat-icon>close</mat-icon>
                   </button>
                 </div>
               </div>
-              <button mat-button color="primary" type="button" (click)="addOption(getOptions(i))">
+              <button mat-button color="primary" type="button" (click)="addOption(getOptionsArray(i))">
                 <mat-icon>add</mat-icon> Añadir Opción
               </button>
             </div>

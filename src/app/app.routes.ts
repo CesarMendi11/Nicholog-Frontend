@@ -5,6 +5,7 @@ import { CollectionBuilderComponent } from './components/collection-builder/coll
 import { CollectionListComponent } from './components/collection-list/collection-list.component';
 import { InventoryComponent } from './components/inventory/inventory.component';
 import { ItemFormComponent } from './components/item-form/item-form.component';
+import { ResumenComponent } from './components/resumen/resumen.component';
 
 export const routes: Routes = [
   // 1. Ruta raíz: Redirige automáticamente al login
@@ -31,7 +32,7 @@ export const routes: Routes = [
       { path: '', redirectTo: 'colecciones', pathMatch: 'full' },
 
       // 2. Vista Principal (Dashboard Stats)
-      // { path: 'resumen', component: ResumenComponent, data: { animationState: 'Resumen' } },
+      { path: 'resumen', component: ResumenComponent, data: { animationState: 'Resumen' } },
 
       // 3. Gestión de Colecciones (Listado)
       { path: 'colecciones', component: CollectionListComponent, data: { animationState: 'Colecciones' } },

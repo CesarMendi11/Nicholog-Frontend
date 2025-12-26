@@ -72,3 +72,23 @@
   justify-content: center;
   padding: 50px;
 }
+
+/* Badges de colores - NUEVO ENFOQUE */
+/* Esto utiliza las variables CSS de Material para cambiar el color del texto del chip */
+.chip-color-success {
+  --mdc-chip-label-text-color: #2e7d32;
+}
+.chip-color-warning {
+  --mdc-chip-label-text-color: #ed6c02;
+}
+.chip-color-warn {
+  --mdc-chip-label-text-color: #d32f2f;
+}
+.chip-color-primary {
+  --mdc-chip-label-text-color: #1976d2;
+}
+
+/* Para que el texto en negrita también tome el color */
+[class*='chip-color-'] strong {
+  color: var(--mdc-chip-label-text-color);
+}

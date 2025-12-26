@@ -36,7 +36,10 @@
           <div formGroupName="dynamicData" class="dynamic-grid">
             
             <ng-container *ngFor="let field of template?.fields">
-              <ng-container [ngSwitch]="field.type">
+              <!-- Contenedor con clase dinámica según el ancho -->
+              <div [class.col-full]="!field.width || field.width === 'full'" 
+                   [class.col-half]="field.width === 'half'"
+                   [ngSwitch]="field.type">
                 
                 <!-- Texto Corto, Largo, URL, Número -->
                 <mat-form-field *ngSwitchCase="'text-short'" appearance="outline">
@@ -79,7 +82,7 @@
                   <mat-checkbox [formControlName]="field.name">{{ field.name }}</mat-checkbox>
                 </div>
 
-              </ng-container>
+              </div>
             </ng-container>
           </div>
         </div>

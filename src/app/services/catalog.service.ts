@@ -11,7 +11,9 @@ export interface CollectionField {
   type: FieldType;
   name: string;
   options?: string[]; // Solo requerido si type es 'selector'
+  optionColors?: { [key: string]: string }; // Mapa de opción -> color (ej: 'Nuevo': 'green')
   required?: boolean;
+  width?: 'full' | 'half'; // Control de ancho (100% o 50%)
 }
 
 export interface CollectionTemplate {

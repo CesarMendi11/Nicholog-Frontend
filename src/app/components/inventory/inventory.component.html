@@ -35,8 +35,9 @@
           </mat-card-header>
           <mat-card-content>
             <mat-chip-listbox aria-label="Datos dinámicos">
-              <mat-chip *ngFor="let key of objectKeys(item.dynamicData) | slice:0:2">
-                <strong>{{ key }}:</strong>&nbsp;{{ item.dynamicData[key] }}
+              <mat-chip [ngClass]="'chip-color-' + getBadgeColor(key, item.dynamicData[key])" *ngFor="let key of objectKeys(item.dynamicData) | slice:0:4">
+                <strong>{{ key }}:</strong>&nbsp;
+                <span>{{ item.dynamicData[key] }}</span>
               </mat-chip>
             </mat-chip-listbox>
           </mat-card-content>

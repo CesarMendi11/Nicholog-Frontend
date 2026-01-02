@@ -6,6 +6,7 @@ import { CollectionListComponent } from './components/collection-list/collection
 import { InventoryComponent } from './components/inventory/inventory.component';
 import { ItemFormComponent } from './components/item-form/item-form.component';
 import { ResumenComponent } from './components/resumen/resumen.component';
+import { AnalyticsDetailComponent } from './components/analytics-detail/analytics-detail.component';
 
 export const routes: Routes = [
   // 1. Ruta raíz: Redirige automáticamente al login
@@ -28,11 +29,14 @@ export const routes: Routes = [
     children: [
       // AQUÍ IRÁN LAS VISTAS INTERNAS (Hijas)
       
-      // 1. Redirección por defecto al resumen
-      { path: '', redirectTo: 'colecciones', pathMatch: 'full' },
+      // 1. Redirección por defecto al resumen (Estándar y seguro)
+      { path: '', redirectTo: 'resumen', pathMatch: 'full' },
 
       // 2. Vista Principal (Dashboard Stats)
       { path: 'resumen', component: ResumenComponent, data: { animationState: 'Resumen' } },
+
+      // NUEVA RUTA: Vista de detalle para las métricas del dashboard
+      { path: 'analytics/:metric', component: AnalyticsDetailComponent, data: { animationState: 'AnalyticsDetail' } },
 
       // 3. Gestión de Colecciones (Listado)
       { path: 'colecciones', component: CollectionListComponent, data: { animationState: 'Colecciones' } },

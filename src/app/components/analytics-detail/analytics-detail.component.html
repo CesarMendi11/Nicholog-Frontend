@@ -1,0 +1,77 @@
+<div class="container" *ngIf="{ metric: metric$ | async, title: title$ | async, details: details$ | async } as data">
+  <div class="header">
+    <div>
+      <h1 class="mat-headline-5">{{ data.title }}</h1>
+      <h2 class="mat-body-1" *ngIf="data.details">
+        Mostrando {{ data.details.length }} artículos ordenados por mayor {{ data.metric === 'costo' ? 'costo' : 'valor' }}.
+      </h2>
+    </div>
+    <div class="actions">
+      <button mat-flat-button color="primary" (click)="exportToCsv()" [disabled]="!data.details || data.details.length === 0" style="margin-right: 10px;">
+        <mat-icon>download</mat-icon>
+        Exportar CSV
+      </button>
+      <a mat-stroked-button routerLink="/dashboard/resumen">
+        <mat-icon>arrow_back</mat-icon>
+        Volver
+      </a>
+    </div>
+  </div>
+
+  <!-- Mensaje de Error Visual -->
+  <div class="error-container" *ngIf="hasError$ | async">
+    <mat-icon class="error-icon">error_outline</mat-icon>
+    <h3>Ocurrió un error en el servidor</h3>
+    <p>No pudimos cargar el desglose de esta métrica. Por favor, intenta más tarde.</p>
+  </div>
+
+  <mat-card *ngIf="!(hasError$ | async) && data.details; else loadingOrError">
+    <mat-card-content>
+      <table mat-table [dataSource]="data.details" class="mat-elevation-z2">
+
+        <!-- Columna Imagen -->
+        <ng-container matColumnDef="image">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let item">
+            <img [src]="item.image || 'https://placehold.co/50?text=IMG'" class="item-thumb" onerror="this.src='https://placehold.co/50?text=IMG'">
+          </td>
+        </ng-container>
+
+        <!-- Columna Nombre -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> Nombre del Artículo </th>
+          <td mat-cell *matCellDef="let item"> {{ item.name }} </td>
+        </ng-container>
+
+        <!-- Columna Colección -->
+        <ng-container matColumnDef="collectionName">
+          <th mat-header-cell *matHeaderCellDef> Colección </th>
+          <td mat-cell *matCellDef="let item"> {{ item.collectionName }} </td>
+        </ng-container>
+
+        <!-- Columna Fecha -->
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef> Fecha </th>
+          <td mat-cell *matCellDef="let item"> {{ item.date | date:'dd/MM/yyyy' }} </td>
+        </ng-container>
+
+        <!-- Columna Valor/Costo -->
+        <ng-container matColumnDef="value">
+          <th mat-header-cell *matHeaderCellDef> {{ data.metric === 'costo' ? 'Costo' : 'Valor' }} </th>
+          <td mat-cell *matCellDef="let item" class="value-cell"> 
+            {{ item.value | currency }}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+
+  <ng-template #loadingOrError>
+    <div class="loading-container" *ngIf="!(hasError$ | async)">
+      <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+    </div>
+  </ng-template>
+</div>

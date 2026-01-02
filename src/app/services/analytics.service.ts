@@ -10,6 +10,14 @@ export interface DashboardStats {
   topItems: { name: string; value: number; image?: string; collectionName: string }[];
 }
 
+export interface ItemDetail {
+  name: string;
+  collectionName: string;
+  value: number;
+  date: Date;
+  image?: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -20,5 +28,9 @@ export class AnalyticsService {
 
   getDashboardStats(): Observable<DashboardStats> {
     return this.http.get<DashboardStats>(`${this.apiUrl}/dashboard`);
+  }
+
+  getMetricDetails(metric: string): Observable<ItemDetail[]> {
+    return this.http.get<ItemDetail[]>(`${this.apiUrl}/details/${metric}`);
   }
 }

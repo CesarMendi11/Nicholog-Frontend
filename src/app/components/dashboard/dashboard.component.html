@@ -65,9 +65,10 @@
       
       <span class="spacer"></span>
 
-      <button mat-icon-button class="action-btn">
+      <div class="search-bar">
         <mat-icon>search</mat-icon>
-      </button>
+        <input type="text" placeholder="Buscar en tu colección..." [(ngModel)]="searchQuery" (keyup.enter)="onSearch()">
+      </div>
       <button mat-icon-button class="action-btn notification-btn">
         <mat-icon>notifications_none</mat-icon>
         <span class="notification-dot"></span>

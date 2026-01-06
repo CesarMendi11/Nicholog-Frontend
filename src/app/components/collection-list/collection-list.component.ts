@@ -11,6 +11,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatMenuModule } from '@angular/material/menu';
 
 import { listStaggerAnimation } from '../../animations';
 import { CatalogService, CollectionTemplate } from '../../services/catalog.service';
@@ -28,7 +29,8 @@ import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.
     MatProgressSpinnerModule,
     MatTooltipModule,
     MatDialogModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatMenuModule
   ],
   templateUrl: './collection-list.component.html',
   styleUrls: ['./collection-list.component.css'],
@@ -91,5 +93,15 @@ export class CollectionListComponent implements OnInit {
         });
       }
     });
+  }
+
+  // Genera un gradiente único y consistente basado en el nombre de la colección
+  getCardGradient(name: string): string {
+    let hash = 0;
+    for (let i = 0; i < name.length; i++) {
+      hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    const hue = Math.abs(hash % 360);
+    return `linear-gradient(135deg, hsl(${hue}, 70%, 60%), hsl(${hue + 40}, 80%, 50%))`;
   }
 }

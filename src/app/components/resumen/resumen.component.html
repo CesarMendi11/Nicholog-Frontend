@@ -107,7 +107,17 @@
         <mat-card-title>Distribución de Inversión</mat-card-title>
       </mat-card-header>
       <mat-card-content class="chart-content">
-        <div class="pie-chart" [style.background]="pieChartStyle$ | async"></div>
+        <!-- Gráfico de Pastel SVG Interactivo -->
+        <div class="pie-chart-container-svg">
+          <svg viewBox="-1.1 -1.1 2.2 2.2" class="pie-chart-svg">
+            <path *ngFor="let slice of pieChartSlices$ | async"
+                  [attr.d]="slice.path"
+                  [attr.fill]="slice.color"
+                  class="pie-slice"
+                  matTooltip="{{slice.label}}: {{slice.percentage}}%">
+            </path>
+          </svg>
+        </div>
         <div class="legend">
           <div *ngFor="let cat of stats.categoryDistribution" class="legend-item">
             <span class="color-dot" [style.background-color]="cat.color"></span>

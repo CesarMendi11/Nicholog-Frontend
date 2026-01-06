@@ -4,10 +4,10 @@
       <button mat-icon-button routerLink="/dashboard/colecciones" matTooltip="Volver a mis colecciones">
         <mat-icon>arrow_back</mat-icon>
       </button>
-      <h1>Inventario: {{ collectionName }}</h1>
+      <h1>{{ collectionName }}</h1>
     </div>
     <span class="spacer"></span>
-    <button mat-fab extended color="primary" [routerLink]="['./nuevo']" matTooltip="Añadir un nuevo artículo a esta colección">
+    <button mat-raised-button color="primary" [routerLink]="['./nuevo']">
       <mat-icon>add</mat-icon>
       Añadir Artículo
     </button>
@@ -35,7 +35,7 @@
           </mat-card-header>
           <mat-card-content>
             <mat-chip-listbox aria-label="Datos dinámicos">
-              <mat-chip [ngClass]="'chip-color-' + getBadgeColor(key, item.dynamicData[key])" *ngFor="let key of objectKeys(item.dynamicData) | slice:0:4">
+              <mat-chip *ngFor="let key of objectKeys(item.dynamicData) | slice:0:4">
                 <strong>{{ key }}:</strong>&nbsp;
                 <span>{{ item.dynamicData[key] }}</span>
               </mat-chip>

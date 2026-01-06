@@ -28,7 +28,7 @@
 
   <mat-card *ngIf="!(hasError$ | async) && data.details; else loadingOrError">
     <mat-card-content>
-      <table mat-table [dataSource]="data.details" class="mat-elevation-z2">
+      <table mat-table [dataSource]="data.details">
 
         <!-- Columna Imagen -->
         <ng-container matColumnDef="image">

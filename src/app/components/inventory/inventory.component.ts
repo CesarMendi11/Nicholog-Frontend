@@ -96,15 +96,4 @@ export class InventoryComponent implements OnInit {
     if (!obj) return [];
     return Object.keys(obj);
   }
-
-  // Obtener color para un valor específico
-  getBadgeColor(key: string, value: any): string {
-    if (!this.template || !this.template.fields) return 'default';
-    
-    const field = this.template.fields.find(f => f.name === key);
-    if (field && field.optionColors && field.optionColors[value]) {
-      return field.optionColors[value];
-    }
-    return 'default';
-  }
 }

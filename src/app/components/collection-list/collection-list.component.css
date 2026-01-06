@@ -1,46 +1,198 @@
-@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
-
-.list-container {
-  padding: 20px;
+.container {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
-.list-header {
+/* --- HEADER --- */
+.header-actions {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: 32px;
 }
 
-.spacer {
-  flex: 1 1 auto;
+.header-actions h1 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a202c;
+  letter-spacing: -0.5px;
 }
 
-.collections-grid {
+.header-actions p {
+  margin: 4px 0 0;
+  color: #718096;
+}
+
+.add-btn {
+  border-radius: 24px;
+  padding: 0 24px;
+  height: 48px;
+}
+
+/* --- GRID --- */
+.grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
+  gap: 24px;
 }
 
+/* --- TARJETA DE COLECCIÓN --- */
 .collection-card {
+  border-radius: 16px;
+  overflow: hidden;
   cursor: pointer;
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  border: 1px solid #e2e8f0;
+  background: white;
+  position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .collection-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+  border-color: transparent;
+}
+
+/* Parte superior con color */
+.card-visual {
+  height: 100px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.visual-icon {
+  width: 64px;
+  height: 64px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: 800;
+  color: #4a5568;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transform: translateY(50%); /* Mitad adentro, mitad afuera */
+  z-index: 2;
+}
+
+.more-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  color: rgba(255,255,255,0.9);
+}
+
+/* Contenido */
+.card-content {
+  padding: 40px 20px 20px 20px; /* Padding top extra para el icono */
+  text-align: center;
+  flex-grow: 1;
+}
+
+.collection-title {
+  margin: 0 0 8px 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #2d3748;
+}
+
+.meta-info {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  font-size: 0.85rem;
+  color: #718096;
+}
+
+.badge {
+  background: #edf2f7;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-weight: 600;
+  color: #4a5568;
+}
+
+/* Acción al hacer hover */
+.card-hover-action {
+  height: 0;
+  overflow: hidden;
+  background: #f7fafc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #3182ce;
+  font-weight: 600;
+  transition: height 0.3s ease;
+  gap: 8px;
+}
+
+.collection-card:hover .card-hover-action {
+  height: 48px;
+  border-top: 1px solid #e2e8f0;
+}
+
+/* --- TARJETA "NUEVA" --- */
+.new-card {
+  border: 2px dashed #cbd5e0;
+  background: transparent;
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 240px;
+}
+
+.new-card:hover {
+  border-color: #3182ce;
+  background: #ebf8ff;
+  transform: translateY(-4px);
+}
+
+.new-content {
+  text-align: center;
+  color: #718096;
+}
+
+.new-icon {
+  width: 48px;
+  height: 48px;
+  background: #e2e8f0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px auto;
+  transition: all 0.3s ease;
+}
+
+.new-card:hover .new-icon {
+  background: #3182ce;
+  color: white;
+}
+
+.new-content h3 {
+  margin: 0;
+  font-weight: 600;
+}
+
+/* --- ESTADOS DE CARGA Y VACÍO --- */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  padding: 60px;
 }
 
 .empty-state {
-  grid-column: 1 / -1; /* Ocupa todo el ancho del grid */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 40px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
   text-align: center;
-  color: #777;
+  padding: 60px;
+  color: #a0aec0;
 }
 
 .empty-icon {
@@ -48,15 +200,4 @@
   width: 64px;
   height: 64px;
   margin-bottom: 16px;
-  color: #ccc;
-}
-
-.loading-spinner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 50px;
-  gap: 16px;
-  color: #777;
 }

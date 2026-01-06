@@ -9,8 +9,16 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { AnalyticsService, DashboardStats } from '../../services/analytics.service';
+
+interface PieSlice {
+  path: string;
+  color: string;
+  label: string;
+  percentage: number;
+}
 
 @Component({
   selector: 'app-resumen',
@@ -22,7 +30,8 @@ import { AnalyticsService, DashboardStats } from '../../services/analytics.servi
     MatIconModule,
     MatButtonModule,
     MatProgressSpinnerModule,
-    MatDividerModule
+    MatDividerModule,
+    MatTooltipModule
   ],
   templateUrl: './resumen.component.html',
   styleUrls: ['./resumen.component.css']
@@ -31,7 +40,7 @@ export class ResumenComponent implements OnInit {
   private analyticsService = inject(AnalyticsService);
   
   stats$: Observable<DashboardStats | null> | undefined;
-  pieChartStyle$: Observable<string> | undefined;
+  pieChartSlices$: Observable<PieSlice[]> | undefined;
 
   // Variables para el ROI
   roiValue: number = 0;
@@ -97,20 +106,32 @@ export class ResumenComponent implements OnInit {
       shareReplay(1) // Evita duplicar la petición
     );
 
-    // Generar el estilo del gradiente cónico para el gráfico de pastel
-    this.pieChartStyle$ = this.stats$.pipe(
+    // Generar las rebanadas SVG para el gráfico de pastel
+    this.pieChartSlices$ = this.stats$.pipe(
       map(stats => {
-        let gradient = 'conic-gradient(';
-        let currentDeg = 0;
         if (!stats || !stats.categoryDistribution || stats.categoryDistribution.length === 0) {
-          return 'conic-gradient(#e0e0e0 0% 100%)';
+          // Círculo gris completo si no hay datos
+          return [{
+            path: this.calculateSlicePath(0, 100),
+            color: '#e0e0e0',
+            label: 'Sin datos',
+            percentage: 100
+          }];
         }
-        stats.categoryDistribution.forEach((cat, i) => {
-          const endDeg = currentDeg + (cat.percentage * 3.6); // 3.6 grados por 1%
-          gradient += `${cat.color} ${currentDeg}deg ${endDeg}deg${i < stats.categoryDistribution.length - 1 ? ', ' : ''}`;
-          currentDeg = endDeg;
+
+        let currentPercent = 0;
+        return stats.categoryDistribution.map(cat => {
+          const start = currentPercent;
+          const end = currentPercent + cat.percentage;
+          currentPercent = end;
+          
+          return {
+            path: this.calculateSlicePath(start, end),
+            color: cat.color || '#ccc',
+            label: cat.label,
+            percentage: cat.percentage
+          };
         });
-        return gradient + ')';
       })
     );
   }
@@ -142,6 +163,23 @@ export class ResumenComponent implements OnInit {
     // Generar el path para el área sombreada del gráfico
     const areaPoints = this.chartPoints;
     this.chartAreaPath = `M0,${height} ${areaPoints} L${width},${height} Z`;
+  }
+
+  // Cálculo matemático para dibujar arcos SVG
+  calculateSlicePath(startPercent: number, endPercent: number): string {
+    // Caso círculo completo
+    if (endPercent - startPercent >= 100) {
+      return `M 1 0 A 1 1 0 1 1 -1 0 A 1 1 0 1 1 1 0 Z`;
+    }
+
+    const startX = Math.cos(2 * Math.PI * (startPercent / 100) - Math.PI / 2);
+    const startY = Math.sin(2 * Math.PI * (startPercent / 100) - Math.PI / 2);
+    const endX = Math.cos(2 * Math.PI * (endPercent / 100) - Math.PI / 2);
+    const endY = Math.sin(2 * Math.PI * (endPercent / 100) - Math.PI / 2);
+
+    const largeArcFlag = (endPercent - startPercent) > 50 ? 1 : 0;
+
+    return `M 0 0 L ${startX} ${startY} A 1 1 0 ${largeArcFlag} 1 ${endX} ${endY} Z`;
   }
 
   // Cargar los últimos artículos agregados

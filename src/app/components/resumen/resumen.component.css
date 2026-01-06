@@ -1,12 +1,21 @@
-/* Estilos para tarjetas clicables */
-.widget-card[routerLink] {
-  cursor: pointer;
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+/* --- ESTILOS DE TARJETAS PREMIUM --- */
+
+/* Base para todas las tarjetas (Widgets y Gráficos) */
+.widget-card, .chart-card {
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* Curva de animación suave */
+  position: relative; /* Necesario para z-index */
 }
 
-.widget-card[routerLink]:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+/* Efecto Hover: Elevación y Sombra Profunda */
+.widget-card:hover, .chart-card:hover {
+  transform: translateY(-5px) scale(1.01); /* Se eleva y crece muy sutilmente */
+  box-shadow: 0 15px 30px rgba(0,0,0,0.1); /* Sombra difusa estilo 'glass' */
+  z-index: 5; /* Se pone por encima de otros elementos */
+}
+
+/* Cursor de mano solo si es un enlace */
+.widget-card[routerLink] {
+  cursor: pointer;
 }
 
 .dashboard-container {
@@ -143,11 +152,30 @@
   padding: 24px;
 }
 
-.pie-chart {
+.pie-chart-container-svg {
   width: 200px;
   height: 200px;
-  border-radius: 50%;
-  border: 1px solid #eee;
+  position: relative;
+}
+
+.pie-chart-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible; /* Permite que la rebanada se salga un poco al crecer */
+}
+
+.pie-slice {
+  stroke: #fff; /* Borde blanco para separar rebanadas */
+  stroke-width: 0.02;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s ease; /* Efecto rebote suave */
+  cursor: pointer;
+  transform-origin: 0 0; /* Escalar desde el centro */
+}
+
+.pie-slice:hover {
+  transform: scale(1.1); /* Crece un 10% */
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)); /* Sombra para dar profundidad */
+  z-index: 10;
 }
 
 .legend {
@@ -180,7 +208,21 @@
   display: flex;
   align-items: center;
   padding: 12px 0;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #f0f0f0;
+  transition: all 0.2s ease-in-out; /* Suavidad */
+  position: relative; /* Para z-index */
+  border-radius: 8px; /* Bordes redondeados al hacer hover */
+}
+
+/* Efecto Premium al pasar el mouse */
+.top-item-row:hover {
+  background-color: #ffffff;
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  z-index: 10;
+  padding-left: 8px; /* Pequeño indentado visual */
+  padding-right: 8px;
+  border-bottom-color: transparent; /* Ocultar la línea para que se vea flotando */
 }
 
 .top-item-row:last-child { border-bottom: none; }
@@ -246,6 +288,18 @@
   align-items: center;
   padding-bottom: 12px;
   border-bottom: 1px solid #f0f0f0;
+  transition: all 0.2s ease-in-out; /* Suavidad */
+  position: relative; /* Para z-index */
+  border-radius: 8px; /* Bordes redondeados al hacer hover */
+}
+
+.activity-item:hover {
+  background-color: #ffffff;
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  z-index: 10;
+  padding: 12px 8px; /* Ajustar padding para que no se corte */
+  border-bottom-color: transparent; /* Ocultar la línea para que se vea flotando */
 }
 
 .activity-item:last-child { border-bottom: none; }

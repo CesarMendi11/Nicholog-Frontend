@@ -9,6 +9,24 @@
   margin-bottom: 24px;
 }
 
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.back-btn {
+  border: 1px solid #e0e0e0;
+  background-color: white;
+  color: #555;
+  transition: all 0.2s ease;
+}
+
+.back-btn:hover {
+  background-color: #f5f5f5;
+  transform: translateX(-3px); /* Pequeño movimiento a la izquierda */
+}
+
 .mat-headline-5 {
   margin: 0;
 }
@@ -59,4 +77,33 @@ table {
   width: 48px;
   height: 48px;
   margin-bottom: 16px;
+}
+
+/* --- BOTONES Y ACCIONES --- */
+.actions {
+  display: flex;
+  gap: 12px; /* Espaciado limpio entre botones */
+}
+
+.animate-btn {
+  transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.2s ease;
+}
+
+.animate-btn:hover:not([disabled]) {
+  transform: translateY(-3px); /* Efecto de elevación */
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15); /* Sombra suave */
+  z-index: 1;
+}
+
+/* --- BOTÓN DE REPORTE --- */
+.export-btn {
+  border-radius: 24px; /* Botón redondeado estilo 'pill' */
+  padding: 0 24px;
+  border-color: #e0e0e0;
+  transition: all 0.3s ease;
+}
+
+.export-btn:hover:not([disabled]) {
+  background-color: #e3f2fd; /* Fondo azul muy claro al pasar el mouse */
+  border-color: #1976d2;
 }

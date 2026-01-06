@@ -1,20 +1,21 @@
 <div class="container" *ngIf="{ metric: metric$ | async, title: title$ | async, details: details$ | async } as data">
   <div class="header">
-    <div>
-      <h1 class="mat-headline-5">{{ data.title }}</h1>
-      <h2 class="mat-body-1" *ngIf="data.details">
-        Mostrando {{ data.details.length }} artículos ordenados por mayor {{ data.metric === 'costo' ? 'costo' : 'valor' }}.
-      </h2>
+    <div class="header-left">
+      <a mat-icon-button routerLink="/dashboard/resumen" class="back-btn">
+        <mat-icon>arrow_back</mat-icon>
+      </a>
+      <div>
+        <h1 class="mat-headline-5">{{ data.title }}</h1>
+        <h2 class="mat-body-1" *ngIf="data.details">
+          Mostrando {{ data.details.length }} artículos ordenados por mayor {{ data.metric === 'costo' ? 'costo' : 'valor' }}.
+        </h2>
+      </div>
     </div>
     <div class="actions">
-      <button mat-flat-button color="primary" (click)="exportToCsv()" [disabled]="!data.details || data.details.length === 0" style="margin-right: 10px;">
-        <mat-icon>download</mat-icon>
+      <button mat-stroked-button color="primary" (click)="exportToCsv()" [disabled]="!data.details || data.details.length === 0" class="export-btn animate-btn">
+        <mat-icon>description</mat-icon>
         Exportar CSV
       </button>
-      <a mat-stroked-button routerLink="/dashboard/resumen">
-        <mat-icon>arrow_back</mat-icon>
-        Volver
-      </a>
     </div>
   </div>
 

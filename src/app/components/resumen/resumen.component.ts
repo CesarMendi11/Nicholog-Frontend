@@ -40,12 +40,8 @@ export class ResumenComponent implements OnInit {
   // Colores para el gráfico
   private colors = ['#3f51b5', '#ff4081', '#4caf50', '#ff9800', '#9c27b0', '#00bcd4'];
 
-  // Mock Data para Actividad Reciente (Simulación)
-  recentActivity = [
-    { action: 'Agregaste', item: 'Air Jordan 1 Chicago', time: 'Hace 2 horas', icon: 'add_circle', color: '#4caf50' },
-    { action: 'Editaste', item: 'Colección de Monedas', time: 'Ayer', icon: 'edit', color: '#ff9800' },
-    { action: 'Valor Subió', item: 'Charizard 1st Ed.', time: 'Hace 2 días', icon: 'trending_up', color: '#3f51b5' }
-  ];
+  // Datos de Actividad Reciente (Ahora dinámicos)
+  recentActivity: any[] = [];
 
   // Datos para el gráfico de línea (Histórico)
   historyData: { month: string; value: number }[] = [];
@@ -54,6 +50,9 @@ export class ResumenComponent implements OnInit {
 
   ngOnInit() {
     console.log('Inicializando ResumenComponent...'); // Debug para verificar carga
+    
+    this.loadRecentActivity(); // <--- Cargar actividad real al iniciar
+
     this.stats$ = this.analyticsService.getDashboardStats().pipe(
       startWith(null), // Forzar emisión inicial para mostrar spinner
       map(stats => {
@@ -143,6 +142,47 @@ export class ResumenComponent implements OnInit {
     // Generar el path para el área sombreada del gráfico
     const areaPoints = this.chartPoints;
     this.chartAreaPath = `M0,${height} ${areaPoints} L${width},${height} Z`;
+  }
+
+  // Cargar los últimos artículos agregados
+  loadRecentActivity() {
+    // Usamos el endpoint 'items' que ya ordena por fecha de creación
+    this.analyticsService.getMetricDetails('items').pipe(
+      take(1),
+      catchError(err => {
+        console.error('Error cargando actividad reciente', err);
+        return of([]);
+      })
+    ).subscribe(items => {
+      if (items && items.length > 0) {
+        // Tomamos los 5 más recientes
+        this.recentActivity = items.slice(0, 5).map(item => ({
+          action: 'Agregaste', // Por ahora asumimos que todo es "Agregado"
+          item: item.name,
+          time: this.getTimeAgo(item.date),
+          icon: 'add_circle',
+          color: '#4caf50' // Verde
+        }));
+      }
+    });
+  }
+
+  // Función auxiliar para formatear el tiempo (ej. "Hace 2 horas")
+  getTimeAgo(dateInput: string | Date): string {
+    const date = new Date(dateInput);
+    const now = new Date();
+    const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+    
+    let interval = seconds / 86400; // Días
+    if (interval > 1) return `Hace ${Math.floor(interval)} días`;
+    
+    interval = seconds / 3600; // Horas
+    if (interval > 1) return `Hace ${Math.floor(interval)} horas`;
+    
+    interval = seconds / 60; // Minutos
+    if (interval > 1) return `Hace ${Math.floor(interval)} min`;
+    
+    return "Hace un momento";
   }
 
   exportReport() {

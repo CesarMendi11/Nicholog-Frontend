@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { switchMap } from 'rxjs';
+import { Observable, of, switchMap } from 'rxjs';
 
 // Angular Material
 import { MatCardModule } from '@angular/material/card';
@@ -16,7 +16,6 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { CatalogService, CollectionTemplate, Item } from '../../services/catalog.service';
 
@@ -37,8 +36,7 @@ import { CatalogService, CollectionTemplate, Item } from '../../services/catalog
     MatNativeDateModule,
     MatCheckboxModule,
     MatSnackBarModule,
-    MatDividerModule,
-    MatTooltipModule
+    MatDividerModule
   ],
   templateUrl: './item-form.component.html',
   styleUrls: ['./item-form.component.css']

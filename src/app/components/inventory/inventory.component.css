@@ -32,19 +32,115 @@
 }
 
 .item-card {
+  border-radius: 16px;
+  overflow: hidden;
   cursor: pointer;
-  transition: box-shadow 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  border: 1px solid #e2e8f0;
+  background: white;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 0 !important; /* Reset de padding de mat-card */
 }
 
 .item-card:hover {
-  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+  border-color: transparent;
 }
 
-.item-card img {
+/*.item-card img {
   height: 200px;
   object-fit: cover;
   background-color: #f0f0f0;
+}*/
+.card-visual {
+  height: 200px; /* Altura fija para la imagen */
+  background-size: cover;
+  background-position: center;
+  background-color: #f7fafc;
+  position: relative;
 }
+
+/* Badge de Precio */
+.price-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(0, 0, 0, 0.75);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  backdrop-filter: blur(4px);
+}
+
+/* Contenido */
+.card-content {
+  padding: 16px;
+  flex-grow: 1;
+}
+
+.item-title {
+  margin: 0 0 8px 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #2d3748;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.meta-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.info-pill {
+  background: #edf2f7;
+  color: #4a5568;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.info-pill strong {
+  color: #1a202c; /* Color más oscuro para la etiqueta */
+  font-weight: 600;
+}
+
+/* Acción al hacer hover (Eliminar) */
+.card-hover-action {
+  height: 0;
+  overflow: hidden;
+  background: #fff5f5; /* Fondo rojo muy suave */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #e53e3e; /* Texto rojo */
+  font-weight: 600;
+  transition: height 0.3s ease, background-color 0.2s;
+  gap: 8px;
+}
+
+.item-card:hover .card-hover-action {
+  height: 48px;
+  border-top: 1px solid #fed7d7;
+}
+
+.card-hover-action:hover {
+  background-color: #e53e3e; /* Rojo intenso al pasar el mouse sobre el botón */
+  color: white;
+}
+
 
 .empty-state {
   display: flex;

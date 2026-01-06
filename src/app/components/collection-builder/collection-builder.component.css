@@ -1,71 +1,115 @@
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
 .builder-container {
-  padding: 20px;
-  max-width: 900px;
+  padding: 32px;
+  max-width: 1400px;
   margin: 0 auto;
+  animation: fadeIn 0.5s ease-out;
+
 }
 
-.card-header-content {
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.title-group {
   display: flex;
   align-items: center;
   gap: 16px;
 }
 
-.builder-card {
-  padding: 10px;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.full-width {
-  width: 100%;
+.subtitle {
+  margin: 0;
+  color: #718096;
+  font-size: 1rem;
 }
 
-.collection-name-section {
-  margin-top: 20px;
-  margin-bottom: 20px;
+.header h1 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a202c;
+  letter-spacing: -0.5px;
 }
 
-.fields-header {
-  margin-top: 20px;
-  margin-bottom: 10px;
+.back-btn {
+  border: 1px solid #e2e8f0;
+  background-color: white;
+  color: #4a5568;
+  transition: all 0.2s ease;
 }
 
-.hint-text {
-  color: #666;
-  font-size: 0.9em;
-  margin-top: -10px;
+.back-btn:hover {
+  background-color: #f7fafc;
+  transform: translateX(-3px);
 }
 
-/* Estilos para la tarjeta de cada campo */
-.field-card {
-  margin-bottom: 16px;
-  background-color: #fafafa; /* Un fondo muy sutil para diferenciarlo del contenedor */
+.save-btn {
+  border-radius: 24px;
+  padding: 0 32px;
+  height: 48px;
+  font-weight: 600;
+  box-shadow: 0 4px 6px rgba(63, 81, 181, 0.3);
+  transition: all 0.2s ease;
 }
 
-.field-card-header {
-  display: flex;
-  align-items: center;
-  padding: 8px 16px 0; /* Ajuste para alinear con el contenido de mat-card */
+.save-btn:hover:not([disabled]) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(63, 81, 181, 0.4);
 }
 
-.field-title {
-  font-weight: bold;
-  color: #3f51b5;
-  text-transform: uppercase;
-  font-size: 0.8em;
+/* --- LAYOUT PRINCIPAL --- */
+.main-layout {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 32px;
+  align-items: start;
 }
 
-.field-card-content {
-  display: flex;
-  gap: 15px;
-  flex-wrap: wrap;
-  align-items: center;
-  padding-top: 10px;
+@media (max-width: 960px) {
+  .main-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- COLUMNA IZQUIERDA: IDENTIDAD --- */
+.identity-card {
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+  overflow: hidden;
+  padding: 0;
+}
+
+.card-visual-header mat-icon {
+  font-size: 64px;
+  width: 64px;
+  height: 64px;
+  opacity: 0.8;
 }
 
 .field-type {
   flex: 1;
   min-width: 200px;
+}
+
+.identity-content {
+  padding: 24px;
 }
 
 .field-name {
@@ -78,30 +122,111 @@
   min-width: 120px;
 }
 
-.field-options {
-  padding-top: 5px;
+.name-field {
+  font-size: 1.1rem;
+  margin-bottom: 16px;
 }
 
 /* Panel de opciones para selectores */
-.selector-panel {
-  margin: 0 16px 16px; /* Márgenes internos de la tarjeta */
+.name-field ::ng-deep .mat-mdc-form-field-input-control {
+  font-weight: 600;
+  color: #1a202c;
+}
+
+.info-box {
+  background-color: #e3f2fd;
+  border-radius: 8px;
   padding: 16px;
-  background-color: #fff;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
+  display: flex;
+  gap: 12px;
+  color: #1565c0;
+  font-size: 0.9rem;
+  line-height: 1.4;
 }
 
-.selector-panel h4 {
-  margin-top: 0;
-  font-size: 0.9em;
-  color: #666;
+.info-box mat-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
 }
 
-.option-row {
+/* --- COLUMNA DERECHA: CAMPOS --- */
+.fields-card {
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+  padding: 0;
+  overflow: hidden;
+}
+
+.fields-card mat-card-header {
+  background-color: #f7fafc;
+  padding: 16px 24px;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.fields-card mat-card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin: 0;
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 5px;
+  gap: 8px;
+}
+
+.fields-list {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Tarjeta de Campo Individual */
+.field-row-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background-color: white;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.field-row-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  border-color: #cbd5e0;
+}
+
+.field-header-strip {
+  background-color: #f8fafc;
+  padding: 8px 16px;
+  border-bottom: 1px solid #edf2f7;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #718096;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.field-body {
+  padding: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto;
+  gap: 16px;
+  align-items: center;
+}
+
+/* Panel de Opciones (Selector) */
+.selector-options-panel {
+  background-color: #fcfcfc;
+  border-top: 1px solid #edf2f7;
+  padding: 16px;
 }
 
 .option-input {
@@ -109,7 +234,7 @@
 }
 
 .color-select {
-  width: 120px;
+  width: 140px;
 }
 
 /* Estado vacío */
@@ -129,15 +254,22 @@
   margin-bottom: 10px;
 }
 
-.add-field-container {
-  text-align: center;
-  margin-bottom: 30px;
+.full-width {
+  width: 100%;
 }
 
-.add-btn {
-  width: 100%;
-  padding: 5px 0;
-  border-style: dashed;
+/* Estados Vacíos */
+.empty-fields {
+  text-align: center;
+  padding: 48px;
+  color: #a0aec0;
+}
+
+.empty-fields mat-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 16px;
 }
 
 .form-actions {
@@ -151,6 +283,11 @@
   font-size: 1.1em;
 }
 
-.spacer {
-  flex: 1 1 auto;
+.card-visual-header {
+  height: 140px;
+  background: linear-gradient(135deg, #3f51b5 0%, #5c6bc0 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
 }

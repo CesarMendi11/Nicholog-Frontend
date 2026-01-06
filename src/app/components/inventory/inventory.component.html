@@ -22,30 +22,39 @@
 
     <ng-template #grid>
       <div class="items-grid">
-        <mat-card *ngFor="let item of items" class="item-card" [routerLink]="['./editar', item._id]">
-          <img mat-card-image 
-               [src]="item.images && item.images.length > 0 ? item.images[0] : 'https://placehold.co/600x400?text=Sin+Imagen'" 
-               alt="{{ item.name }}"
-               onerror="this.src='https://placehold.co/600x400?text=Sin+Imagen'">
-          <mat-card-header>
-            <mat-card-title>{{ item.name }}</mat-card-title>
-            <mat-card-subtitle *ngIf="item.acquisition?.price">
+        <mat-card *ngFor="let item of items" 
+                  class="item-card"
+                  [routerLink]="['./editar', item._id]">
+          
+          <!-- Parte Visual: Imagen del Artículo -->
+          <div class="card-visual" 
+               [style.background-image]="'url(' + (item.images && item.images.length > 0 ? item.images[0] : 'https://placehold.co/600x400?text=Sin+Imagen') + ')'">
+            
+            <!-- Badge de Precio (Overlay) -->
+            <div class="price-badge" *ngIf="item.acquisition?.price">
               Valor: {{ item.acquisition?.price | currency }}
-            </mat-card-subtitle>
-          </mat-card-header>
-          <mat-card-content>
-            <mat-chip-listbox aria-label="Datos dinámicos">
-              <mat-chip *ngFor="let key of objectKeys(item.dynamicData) | slice:0:4">
-                <strong>{{ key }}:</strong>&nbsp;
-                <span>{{ item.dynamicData[key] }}</span>
-              </mat-chip>
-            </mat-chip-listbox>
+            </div>
+          </div>
+
+          <mat-card-content class="card-content">
+            <h2 class="item-title">{{ item.name }}</h2>
+            
+            <!-- Datos dinámicos (Resumen limpio) -->
+            <div class="meta-info">
+              <ng-container *ngFor="let key of objectKeys(item.dynamicData) | slice:0:4">
+                <span class="info-pill">
+                  <strong>{{ key }}:</strong> {{ item.dynamicData[key] }}
+                </span>
+              </ng-container>
+            </div>
           </mat-card-content>
-          <mat-card-actions align="end">
-            <button mat-icon-button (click)="deleteItem(item._id, $event)" color="warn">
-              <mat-icon>delete</mat-icon>
-            </button>
-          </mat-card-actions>
+
+          <!-- Acción al hacer hover: ELIMINAR -->
+          <div class="card-hover-action delete-action" (click)="deleteItem(item._id, $event)">
+            <span>Eliminar</span>
+            <mat-icon>delete</mat-icon>
+          </div>
+
         </mat-card>
       </div>
     </ng-template>

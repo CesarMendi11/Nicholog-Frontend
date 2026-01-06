@@ -1,148 +1,141 @@
-<div class="builder-container">
-  <mat-card class="builder-card">
-    <mat-card-header>
-      <div class="card-header-content">
-        <button mat-icon-button (click)="cancel()" matTooltip="Volver a mis colecciones">
-          <mat-icon>arrow_back</mat-icon>
-        </button>
-        <div>
-          <mat-card-title>Constructor de Plantillas</mat-card-title>
-          <mat-card-subtitle>Diseña el "molde" perfecto para tu colección</mat-card-subtitle>
-        </div>
+<div class="form-container">
+  
+  <!-- Header -->
+  <div class="header">
+    <div class="title-group">
+      <button mat-icon-button (click)="cancel()" class="back-btn" matTooltip="Volver">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <div>
+        <h1>{{ isEditMode ? 'Editar Colección' : 'Nueva Colección' }}</h1>
+        <p class="subtitle">Define la estructura y el molde de tus datos</p>
       </div>
-    </mat-card-header>
+    </div>
+    <div class="actions">
+      <button mat-button (click)="cancel()" style="margin-right: 8px;">Cancelar</button>
+      <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="collectionForm.invalid" class="save-btn">
+        <mat-icon>save</mat-icon> Guardar
+      </button>
+    </div>
+  </div>
 
-    <mat-card-content>
-      <form [formGroup]="collectionForm" (ngSubmit)="onSubmit()" class="builder-form">
-        
-        <!-- 1. Nombre de la Colección -->
-        <div class="collection-name-section">
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Nombre de la Colección</mat-label>
-            <input matInput formControlName="name" placeholder="Ej. Zapatillas, Monedas, Videojuegos Retro">
-            <mat-icon matSuffix>category</mat-icon>
-            <mat-error *ngIf="collectionForm.get('name')?.hasError('required')">
-              El nombre es obligatorio
-            </mat-error>
-          </mat-form-field>
+  <form [formGroup]="collectionForm" class="main-layout">
+    
+    <!-- COLUMNA IZQUIERDA: IDENTIDAD -->
+    <div class="identity-column">
+      <mat-card class="identity-card">
+        <div class="card-visual-header">
+          <mat-icon>category</mat-icon>
         </div>
-
-        <mat-divider></mat-divider>
-        
-        <div class="fields-header">
-          <h3>Campos Definidos</h3>
-          <p class="hint-text">Añade los campos que describirán cada ítem de tu colección.</p>
-        </div>
-
-        <!-- 2. Lista Dinámica de Campos -->
-        <div formArrayName="fields" class="fields-list">
+        <mat-card-content class="identity-content">
           
-          <!-- Iteramos sobre cada campo añadido -->
-          <mat-card *ngFor="let field of fields.controls; let i = index" [formGroupName]="i" class="field-card" appearance="outlined">
-            
-            <div class="field-card-header">
-              <span class="field-title">Campo #{{ i + 1 }}</span>
-              <span class="spacer"></span>
-              <button mat-icon-button color="warn" type="button" (click)="removeField(i)" matTooltip="Eliminar este campo">
-                <mat-icon>delete</mat-icon>
-              </button>
-            </div>
+          <mat-form-field appearance="outline" class="full-width name-field">
+            <mat-label>Nombre de la Colección</mat-label>
+            <input matInput formControlName="name" placeholder="Ej. Zapatillas">
+            <mat-error *ngIf="collectionForm.get('name')?.hasError('required')">Requerido</mat-error>
+          </mat-form-field>
 
-            <mat-card-content class="field-card-content">
-              <!-- Tipo de Dato -->
-              <mat-form-field appearance="outline" class="field-type">
-                <mat-label>Tipo de Dato</mat-label>
-                <mat-select formControlName="type">
-                  <mat-option *ngFor="let type of fieldTypes" [value]="type.value">
-                    {{ type.label }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-
-              <!-- Nombre del Campo (Label) -->
-              <mat-form-field appearance="outline" class="field-name">
-                <mat-label>Nombre del Campo</mat-label>
-                <input matInput formControlName="name" placeholder="Ej. Talla, Marca, Año">
-              </mat-form-field>
-
-              <!-- Ancho del Campo (Smart Layout) -->
-              <mat-form-field appearance="outline" class="field-width">
-                <mat-label>Ancho</mat-label>
-                <mat-select formControlName="width">
-                  <mat-option value="full">Completo (100%)</mat-option>
-                  <mat-option value="half">Medio (50%)</mat-option>
-                </mat-select>
-              </mat-form-field>
-
-              <!-- Checkbox Requerido -->
-              <div class="field-options">
-                <mat-checkbox formControlName="required">Obligatorio</mat-checkbox>
-              </div>
-            </mat-card-content>
-
-            <!-- 3. Sub-sección para Opciones (Solo si es Selector) -->
-            <div *ngIf="field.get('type')?.value === 'selector'" class="selector-panel">
-              <h4>Opciones del Selector</h4>
-              <p class="hint-text">Define las opciones y asigna un color para los "Badges" visuales.</p>
-              
-              <div formArrayName="options">
-                <!-- Iteramos sobre los FormGroups de opciones -->
-                <div *ngFor="let optionGroup of getOptionsArray(i).controls; let j = index" [formGroupName]="j" class="option-row">
-                  <mat-form-field appearance="fill" density="dense" class="option-input">
-                    <mat-label>Opción {{ j + 1 }}</mat-label>
-                    <input matInput formControlName="value" placeholder="Ej. Nuevo, Usado">
-                  </mat-form-field>
-
-                  <!-- Selector de Color Simple -->
-                  <mat-form-field appearance="fill" density="dense" class="color-select">
-                    <mat-label>Color</mat-label>
-                    <mat-select formControlName="color">
-                      <mat-option value="default">Gris</mat-option>
-                      <mat-option value="success">Verde (Bueno)</mat-option>
-                      <mat-option value="warning">Amarillo (Alerta)</mat-option>
-                      <mat-option value="warn">Rojo (Peligro)</mat-option>
-                      <mat-option value="primary">Azul (Info)</mat-option>
-                    </mat-select>
-                  </mat-form-field>
-
-                  <button mat-icon-button color="warn" type="button" (click)="removeOption(getOptionsArray(i), j)">
-                    <mat-icon>close</mat-icon>
-                  </button>
-                </div>
-              </div>
-              <button mat-button color="primary" type="button" (click)="addOption(getOptionsArray(i))">
-                <mat-icon>add</mat-icon> Añadir Opción
-              </button>
-            </div>
-
-          </mat-card>
-
-          <!-- Mensaje si no hay campos -->
-          <div *ngIf="fields.length === 0" class="empty-state">
-            <mat-icon>playlist_add</mat-icon>
-            <p>No has añadido campos todavía. ¡Empieza ahora!</p>
+          <div class="info-box">
+            <mat-icon>info</mat-icon>
+            <p>Este nombre identificará tu colección en el dashboard y en los reportes.</p>
           </div>
 
-        </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
 
-        <!-- Botón para añadir campo -->
-        <div class="add-field-container">
-          <button mat-stroked-button color="primary" type="button" (click)="addField()" class="add-btn">
-            <mat-icon>add_circle_outline</mat-icon> Añadir Nuevo Campo
+    <!-- COLUMNA DERECHA: ESTRUCTURA -->
+    <div class="fields-column">
+      <mat-card class="fields-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>view_list</mat-icon> Estructura de Campos
+          </mat-card-title>
+          <button mat-stroked-button color="primary" type="button" (click)="addField()">
+            <mat-icon>add</mat-icon> Añadir Campo
           </button>
-        </div>
+        </mat-card-header>
+        
+        <mat-card-content>
+          <div formArrayName="fields" class="fields-list">
+            
+            <!-- Iteramos sobre cada campo -->
+            <div *ngFor="let field of fields.controls; let i = index" [formGroupName]="i" class="field-row-card">
+              
+              <div class="field-header-strip">
+                <span>Campo #{{ i + 1 }}</span>
+                <button mat-icon-button color="warn" type="button" (click)="removeField(i)" matTooltip="Eliminar campo">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </div>
 
-        <mat-divider></mat-divider>
+              <div class="field-body">
+                <!-- Nombre -->
+                <mat-form-field appearance="outline" density="dense">
+                  <mat-label>Nombre (Ej. Talla)</mat-label>
+                  <input matInput formControlName="name">
+                </mat-form-field>
 
-        <!-- Botón Submit -->
-        <div class="form-actions">
-          <button mat-button type="button" (click)="cancel()" style="margin-right: 10px;">Cancelar</button>
-          <button mat-raised-button color="primary" type="submit" [disabled]="collectionForm.invalid" class="save-btn">
-            <mat-icon>save</mat-icon> Guardar Plantilla
-          </button>
-        </div>
+                <!-- Tipo -->
+                <mat-form-field appearance="outline" density="dense">
+                  <mat-label>Tipo de Dato</mat-label>
+                  <mat-select formControlName="type">
+                    <mat-option *ngFor="let type of fieldTypes" [value]="type.value">{{ type.label }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
 
-      </form>
-    </mat-card-content>
-  </mat-card>
+                <!-- Ancho -->
+                <mat-form-field appearance="outline" density="dense">
+                  <mat-label>Ancho en Formulario</mat-label>
+                  <mat-select formControlName="width">
+                    <mat-option value="full">Completo (100%)</mat-option>
+                    <mat-option value="half">Medio (50%)</mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <!-- Opciones -->
+                <mat-checkbox formControlName="required" color="primary">Obligatorio</mat-checkbox>
+              </div>
+
+              <!-- Panel de Opciones para Selectores -->
+              <div *ngIf="field.get('type')?.value === 'selector'" class="selector-options-panel">
+                <div formArrayName="options">
+                  <div *ngFor="let optionGroup of getOptionsArray(i).controls; let j = index" [formGroupName]="j" class="option-item">
+                    <mat-form-field appearance="outline" density="dense" class="full-width">
+                      <mat-label>Opción {{ j + 1 }}</mat-label>
+                      <input matInput formControlName="value" placeholder="Ej. Nuevo">
+                    </mat-form-field>
+                    
+                    <mat-form-field appearance="outline" density="dense" class="color-select">
+                      <mat-label>Color</mat-label>
+                      <mat-select formControlName="color">
+                        <mat-option value="default">Gris</mat-option>
+                        <mat-option value="success">Verde</mat-option>
+                        <mat-option value="warning">Amarillo</mat-option>
+                        <mat-option value="warn">Rojo</mat-option>
+                        <mat-option value="primary">Azul</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+
+                    <button mat-icon-button color="warn" type="button" (click)="removeOption(getOptionsArray(i), j)">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </div>
+                </div>
+                <button mat-button color="primary" type="button" (click)="addOption(getOptionsArray(i))">
+                  <mat-icon>add</mat-icon> Añadir Opción
+                </button>
+              </div>
+
+            </div>
+          </div>
+
+          <div *ngIf="fields.length === 0" class="empty-fields">
+            <mat-icon>playlist_add</mat-icon>
+            <p>No hay campos definidos. Añade uno para empezar.</p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </form>
 </div>

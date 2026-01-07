@@ -7,7 +7,10 @@
 /* --- SIDEBAR (Menú Lateral) --- */
 .sidenav {
   width: 260px; /* Un poco más ancho para elegancia */
-  background-color: #ffffff;
+  /* Fondo con imagen y capa semitransparente para legibilidad */
+  background: linear-gradient(rgba(255, 255, 255, 0.50), rgba(255, 255, 255, 0.85)), url('../../img/fondo-lateral.jpg');
+  background-size: cover;
+  background-position: center;
   border: none; /* Quitamos el borde duro */
   box-shadow: 4px 0 24px rgba(0, 0, 0, 0.02); /* Sombra muy difusa */
   display: flex;
